@@ -108,9 +108,13 @@ class PhpInput
 
 					}
 
-					if(isset($string)){
+					if(isset($string) && !empty($string)){
 
 						return $string;
+
+					}else{
+
+						return false;
 
 					}
 
@@ -152,30 +156,6 @@ class PhpInput
 		}else{
 			return false; 
 		}
-	}
-
-	public function Emojies($params){
-
-		if(is_array($params)){
-
-			if(isset($params['data'])){
-
-				if($params['status'] === 'encode'){
-
-					$data = htmlentities($params['data'], ENT_QUOTES);
-					return $data;
-				}
-
-			}else{
-
-				return false;
-
-			}
-		}else{
-
-			return false;
-
-		}	
 	}
 	 /**
 	 * Restore new lines

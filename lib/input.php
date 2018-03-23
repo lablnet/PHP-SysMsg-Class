@@ -57,9 +57,3 @@ function restore_new_lines($str){
 	return object()->RestoreLineBreaks(['str'=>$str]);
 
 }
-
-function emojies_to_entite($str){
-
-	return object()->Emojies(['status'=>'encode','data'=>$str]);
-	
-}

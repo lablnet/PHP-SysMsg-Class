@@ -27,3 +27,13 @@ function system_message($msg,$type){
 	return sysobj()->add(['msg'=>$msg,'type'=>$type]);
 
 }
+	 /**
+	 * View system message
+	 *
+	 * @return string
+	 */	 
+function view_system_message(){
+
+	return sysobj()->View();
+
+}

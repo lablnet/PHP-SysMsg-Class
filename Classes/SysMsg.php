@@ -38,7 +38,7 @@ class SysMsg
 
 				$_SESSION['sys_msg'][$this->type] = $params['msg'];
 
-				return self::View();
+				return true;
 
 			}else{
 
@@ -58,6 +58,59 @@ class SysMsg
 
 		if(!empty($type)){
 
+			$type = strtolower($type);
+
+			switch ($type) {
+
+				case 'success':
+
+					$type = 'success';
+
+					break;
+
+				case 'error':
+
+					$type = 'danger';
+
+					break;	
+
+				case 'information':
+
+					$type = 'info';
+
+					break;
+
+				case 'warning':
+
+					$type = 'warning';
+
+					break;
+
+				case 'primary':
+
+					$type = 'primary';
+
+					break;
+
+				case 'secondary':
+
+					$type = 'secondary';
+
+					break;
+
+				case 'dark':
+
+					$type = 'Dark';
+
+					break;										
+				default:
+
+					$type = 'light';
+
+					break;
+
+			}
+			
 			$this->type = $type;
 
 			return true;
@@ -86,7 +139,7 @@ class SysMsg
 
 	}
 
-	protected function View(){
+	public function View(){
 
 		if(isset($_SESSION['sys_msg'])){
 
@@ -94,15 +147,28 @@ class SysMsg
 
             foreach ($sys_msg as $type => $sys_msg) {
 
-                    $msg = "<div class='alert alert-".$type."'>".'<a href="#" class="close" data-dismiss="alert">&times;</a>'.$sys_msg.'</div>';
+            		if(isset($sys_msg) && isset($type)){
+ 
+                    	$msg = "<div class='alert alert-".$type."'>".'<a href="#" class="close" data-dismiss="alert">&times;</a>'.$sys_msg.'</div>';
 
-                    $msg_data[] = $msg;
+                    	$msg_data[] = $msg;
 
-                    self::Delete($type);
-				
+                    	self::Delete($type);
+
+                	}
+					
             }		
 
-            echo implode('', $msg_data);	
+            if(isset($msg_data)){
+
+            	return implode('', $msg_data);
+
+            }else{
+
+            	return;
+
+            }		
+
 		}else{
 
 			return false;

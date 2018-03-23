@@ -1,9 +1,20 @@
 <?php 
 require_once 'init.php';
+echo view_system_message();
 if(is_submit('submit')){
-  system_message('Form submitted successfully','success');
-	echo '<div class="container">'. restore_new_lines(input('q')) . '</div>';
+  if(input('q')){
+    system_message('Comment added successfully','success');
+     header('Location:index.php');
+    //store to database and return to this or another page
+	   //echo '<div class="container">'. restore_new_lines(input('q')) . '</div>';
+  }else{
+
+    system_message('Can not send empty comment','error');
+    header('Location:index.php');
+
+  }
 }
+
 ?>
 <head>
   <title>PHP Systen Message class example</title>
