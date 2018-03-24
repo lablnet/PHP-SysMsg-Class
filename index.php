@@ -3,7 +3,7 @@ require_once 'init.php';
 echo view_system_message();
 if(is_submit('submit')){
   if(input('q')){
-    system_message('Comment added successfully','success');
+    system_message('Comment added successfully');
      header('Location:index.php');
     //store to database and return to this or another page
 	   //echo '<div class="container">'. restore_new_lines(input('q')) . '</div>';

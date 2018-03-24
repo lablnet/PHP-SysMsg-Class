@@ -32,7 +32,7 @@ class SysMsg
 
 				}else{
 
-					self::Type("success");
+					self::Type("light");
 
 				}
 
@@ -55,8 +55,6 @@ class SysMsg
 	}
 
 	protected function Type($type){
-
-		if(!empty($type)){
 
 			$type = strtolower($type);
 
@@ -113,13 +111,8 @@ class SysMsg
 			
 			$this->type = $type;
 
-			return true;
+			return;
 
-		}else{
-
-			return false;
-
-		}
 
 	}
 
@@ -129,7 +122,7 @@ class SysMsg
 
 			unset($_SESSION['sys_msg'][$type]);
 
-			return true;
+			return;
 
 		}else{
 
@@ -171,7 +164,7 @@ class SysMsg
 
 		}else{
 
-			return false;
+			return;
 
 		}
 

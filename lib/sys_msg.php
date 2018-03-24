@@ -16,11 +16,11 @@ function sysobj(){
 	 *
 	 * @return string
 	 */
-function system_message($msg,$type){
+function system_message($msg,$type=null){
 
 	if(!isset($type) && empty($type)){
 
-		$type = 'success';
+		$type = 'light';
 
 	}	
 
