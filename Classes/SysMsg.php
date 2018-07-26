@@ -2,172 +2,131 @@
 
 class SysMsg
 {
-	private $type;
+    private $type;
 
-	public function __construct(){
+    public function __construct()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
-		if(session_status() === PHP_SESSION_NONE){
+        if (!isset($_SESSION['sys_msg'])) {
+            $_SESSION['sys_msg'] = [];
+        }
+    }
 
-			session_start();
+    public function Add($params)
+    {
+        if (is_array($params)) {
+            if (!empty($params['msg'])) {
+                if (isset($params['type']) && !empty($params['type'])) {
+                    self::Type($params['type']);
+                } else {
+                    self::Type('light');
+                }
 
-		}
+                $_SESSION['sys_msg'][$this->type] = $params['msg'];
 
-		if(!isset($_SESSION['sys_msg'])){
+                return true;
+            } else {
+                $_SESSION['sys_msg'][$this->type] = [];
+            }
+        } else {
+            return false;
+        }
+    }
 
-			$_SESSION['sys_msg'] = [];
+    protected function Type($type)
+    {
+        $type = strtolower($type);
 
-		}
+        switch ($type) {
 
-	}
+                case 'success':
 
-	public function Add($params){
+                    $type = 'success';
 
-		if(is_array($params)){
+                    break;
 
-			if(!empty($params['msg'])){
+                case 'error':
 
-				if(isset($params['type']) && !empty($params['type'])){
+                    $type = 'danger';
 
-					self::Type($params['type']);
+                    break;
 
-				}else{
+                case 'information':
 
-					self::Type("light");
+                    $type = 'info';
 
-				}
+                    break;
 
-				$_SESSION['sys_msg'][$this->type] = $params['msg'];
+                case 'warning':
 
-				return true;
+                    $type = 'warning';
 
-			}else{
+                    break;
 
-				$_SESSION['sys_msg'][$this->type] = [];
+                case 'primary':
 
-			}
+                    $type = 'primary';
 
-		}else{
+                    break;
 
-			return false;
+                case 'secondary':
 
-		}
+                    $type = 'secondary';
 
-	}
+                    break;
 
-	protected function Type($type){
+                case 'dark':
 
-			$type = strtolower($type);
+                    $type = 'Dark';
 
-			switch ($type) {
+                    break;
+                default:
 
-				case 'success':
+                    $type = 'light';
 
-					$type = 'success';
+                    break;
 
-					break;
+            }
 
-				case 'error':
+        $this->type = $type;
+    }
 
-					$type = 'danger';
+    private function Delete($type)
+    {
+        if (!empty($_SESSION['sys_msg'][$type])) {
+            unset($_SESSION['sys_msg'][$type]);
 
-					break;	
-
-				case 'information':
-
-					$type = 'info';
-
-					break;
-
-				case 'warning':
-
-					$type = 'warning';
-
-					break;
-
-				case 'primary':
-
-					$type = 'primary';
-
-					break;
-
-				case 'secondary':
-
-					$type = 'secondary';
-
-					break;
-
-				case 'dark':
-
-					$type = 'Dark';
-
-					break;										
-				default:
-
-					$type = 'light';
-
-					break;
-
-			}
-			
-			$this->type = $type;
-
-			return;
-
-
-	}
-
-	private function Delete($type){
-
-		if(!empty($_SESSION['sys_msg'][$type])){
-
-			unset($_SESSION['sys_msg'][$type]);
-
-			return;
-
-		}else{
-
-			return;
-
-		}		
-
-	}
-
-	public function View(){
-
-		if(isset($_SESSION['sys_msg'])){
-
-			$sys_msg = $_SESSION['sys_msg'];
+            return;
+        } else {
+            return;
+        }
+    }
+
+    public function View()
+    {
+        if (isset($_SESSION['sys_msg'])) {
+            $sys_msg = $_SESSION['sys_msg'];
 
             foreach ($sys_msg as $type => $sys_msg) {
+                if (isset($sys_msg) && isset($type)) {
+                    $msg = "<div class='alert alert-".$type."'>".'<a href="#" class="close" data-dismiss="alert">&times;</a>'.$sys_msg.'</div>';
 
-            		if(isset($sys_msg) && isset($type)){
- 
-                    	$msg = "<div class='alert alert-".$type."'>".'<a href="#" class="close" data-dismiss="alert">&times;</a>'.$sys_msg.'</div>';
+                    $msg_data[] = $msg;
 
-                    	$msg_data[] = $msg;
+                    self::Delete($type);
+                }
+            }
 
-                    	self::Delete($type);
-
-                	}
-					
-            }		
-
-            if(isset($msg_data)){
-
-            	return implode('', $msg_data);
-
-            }else{
-
-            	return;
-
-            }		
-
-		}else{
-
-			return;
-
-		}
-
-	}
-
+            if (isset($msg_data)) {
+                return implode('', $msg_data);
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+    }
 }
